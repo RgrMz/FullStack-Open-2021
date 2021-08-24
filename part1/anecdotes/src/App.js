@@ -24,6 +24,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(anecdotes[0])
   const [votes, setVotes] = useState(points)
+  const [mostVoted, setMostVoted] = useState(0)
 
   const randomAnecdote = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length)
@@ -35,14 +36,21 @@ const App = () => {
     const newVotes = { ...votes }
     newVotes[key] += 1
     setVotes(newVotes)
+    let votesArray = Object.values(votes)
+    let maxVotes = Math.max(...votesArray)
+    setMostVoted(Object.keys(votes).find(key => votes[key] === maxVotes))
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {selected}
       <p>has {votes[anecdotes.findIndex(anecdote => anecdote === selected)]} votes</p>
       <Button text="next anecdote" onClick={randomAnecdote} />
       <Button text="vote" onClick={updateVotes} />
+      <h1>Anecdote with ther most votes</h1>
+      {anecdotes[mostVoted]}
+      <p>has {votes[anecdotes.findIndex(anecdote => anecdote === anecdotes[mostVoted])]} votes</p>
     </div>
   )
 }
