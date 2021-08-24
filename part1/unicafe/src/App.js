@@ -23,33 +23,59 @@ const Statistics = props => {
   let totalVotes = props.votesGood + props.votesNeutral + props.votesBad
   let average = (props.votesGood - props.votesBad) / totalVotes
   let positive = `${((props.votesGood / totalVotes) * 100)} %`
-  if(totalVotes > 0) {
+  if (totalVotes > 0) {
     return (
       <>
         <h1>Statistics</h1>
-        <Vote text={props.votes_text[0]} votes={props.votesGood} />
-        <Vote text={props.votes_text[1]} votes={props.votesNeutral} />
-        <Vote text={props.votes_text[2]} votes={props.votesBad} />
-        <Vote text="all"
-          votes={totalVotes} />
-        <Vote text="average" votes={average} />
-        <Vote text="positive" votes={positive} />
+        <table>
+          <thead>
+            <tr>
+              <th>Statistic</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <StatisticLine text={props.votes_text[0]}
+                  votes={props.votesGood} />
+            </tr>
+            <tr>
+                <StatisticLine text={props.votes_text[1]}
+                  votes={props.votesNeutral} />
+            </tr>
+            <tr>
+                <StatisticLine text={props.votes_text[2]}
+                  votes={props.votesBad} />
+            </tr>
+            <tr>
+                <StatisticLine text="all"
+                  votes={totalVotes} />
+            </tr>
+            <tr>
+                <StatisticLine text="average" votes={average} />
+            </tr>
+            <tr>
+                <StatisticLine text="positive" votes={positive} />
+            </tr>
+          </tbody>
+        </table>
       </>
     )
-  } else{
+  } else {
     return (
       <>
         <p>No feedback given</p>
       </>
     )
   }
-  
+
 }
 
-const Vote = props => {
+const StatisticLine = props => {
   return (
     <>
-      <p>{props.text} {props.votes}</p>
+      <td>{props.text}</td>
+      <td>{props.votes}</td>
     </>
   )
 }
