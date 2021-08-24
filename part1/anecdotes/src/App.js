@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+let points = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
 
 const Button = props => {
   return (
@@ -21,17 +22,27 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(anecdotes[0])
+  const [votes, setVotes] = useState(points)
 
   const randomAnecdote = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length)
     setSelected(anecdotes[randomIndex])
   }
 
+  const updateVotes = () => {
+    let key = anecdotes.findIndex(anecdote => anecdote === selected)
+    const newVotes = { ...votes }
+    newVotes[key] += 1
+    setVotes(newVotes)
+  }
+
   return (
     <div>
       {selected}
+      <p>has {votes[anecdotes.findIndex(anecdote => anecdote === selected)]} votes</p>
       <Button text="next anecdote" onClick={randomAnecdote} />
+      <Button text="vote" onClick={updateVotes} />
     </div>
   )
 }
