@@ -20,12 +20,19 @@ const Feedback = props => {
 }
 
 const Statistics = props => {
+  let totalVotes = props.votesGood + props.votesNeutral + props.votesBad
+  let average = (props.votesGood - props.votesBad) / totalVotes
+  let positive = `${((props.votesGood / totalVotes) * 100)} %`
   return (
     <>
       <h1>Statistics</h1>
-      <Vote text={props.votes_text[0]} votes = {props.votesGood} />
-      <Vote text={props.votes_text[1]} votes = {props.votesNeutral} />
-      <Vote text={props.votes_text[2]} votes = {props.votesBad} />
+      <Vote text={props.votes_text[0]} votes={props.votesGood} />
+      <Vote text={props.votes_text[1]} votes={props.votesNeutral} />
+      <Vote text={props.votes_text[2]} votes={props.votesBad} />
+      <Vote text="all"
+        votes={totalVotes} />
+      <Vote text="average" votes={average} />
+      <Vote text="positive" votes={positive} />
     </>
   )
 }
