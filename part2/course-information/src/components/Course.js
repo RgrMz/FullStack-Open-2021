@@ -1,13 +1,11 @@
 import React from 'react';
 import Content from "./Content";
-import Header from './Header'
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
 
     return (
         <>
-          <Header course={course} />
-          <Content course={course} />
+          <Content courses={courses} />
         </>
     )
 }
