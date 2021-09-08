@@ -23,6 +23,7 @@ const App = () => {
         setCountries(response.data)
       })
   }, [])
+  
   return (
     <div>
       <div>{console.log(countriesToShow.length)}</div>
