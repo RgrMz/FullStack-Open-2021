@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import Country from './components/Country';
 
 const App = () => {
 
@@ -26,22 +27,11 @@ const App = () => {
     <div>
       <div>{console.log(countriesToShow.length)}</div>
       find countries: <input value={search} onChange={handleSearchChange} />
-      {countriesToShow.length > 10 ? 
-        <div>Too many matches, specify another filter</div> : 
-        countriesToShow.map(country => <div key={country.alphacode2}>{country.name}</div>)}
-      {countriesToShow.length === 1 ?
-        <div>
-          <br/>
-          <div>Capital: {countriesToShow[0].capital}</div>
-          <div>Population : {countriesToShow[0].population}</div>
-          <h2>languages</h2>
-          <ul>
-            {countriesToShow[0].languages.map(language => 
-              <li key={language.iso639_1}>{language.name}</li>)}
-          </ul>
-          <img src={countriesToShow[0].flag} height='300px' width='500px'/>
-        </div> : ''}
-    </div>
+      {countriesToShow.length > 10 ?
+        <div>Too many matches, specify another filter</div> :
+        countriesToShow.map(country => <Country key={country.alphacode2} country={country} />)
+      }
+    </div >
   );
 }
 
