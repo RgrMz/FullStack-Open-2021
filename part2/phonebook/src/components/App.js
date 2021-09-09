@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Numbers from './Numbers'
+import Notification from './Notification'
 import personsService from '../services/persons'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [personsToShow, setPersonsToShow] = useState(persons)
+  const [success, setSuccess] = useState(null)
 
   useEffect(() => {
     personsService.getAll().then(initialPersons => {
@@ -50,11 +52,13 @@ const App = () => {
             setPersonsToShow(persons.map(person => person.id !== changedPerson.id ? person : updated))
             setNewName('')
             setNewNumber('')
-            alert('NNumber changed correctly')
+            setSuccess(`${changedPerson.name} number's updated`)
+            setTimeout(() => {
+              setSuccess(null)
+            }, 5000)
           })
       }
     }
-
     else {
       const newPerson = { name: newName, id: persons[persons.length - 1].id + 1, number: newNumber }
       personsService.create(newPerson).then(newPerson => {
@@ -62,7 +66,10 @@ const App = () => {
         setPersonsToShow(persons.concat(newPerson))
         setNewName('')
         setNewNumber('')
-        alert('New person and number added correctly')
+        setSuccess(`${newPerson.name} number's added`)
+        setTimeout(() => {
+          setSuccess(null)
+        }, 5000)
       })
     }
   }
@@ -83,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={success} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber}
