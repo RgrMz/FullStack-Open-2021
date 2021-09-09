@@ -39,10 +39,24 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     const duplicated = persons.find(person => person.name === newName)
-    if (typeof duplicated !== 'undefined')
-      alert(`${newName} is already added to the phonebook`)
+    if (typeof duplicated !== 'undefined') {
+      if (window.confirm(`${newName} is already added to the phonebook, replace the old number?`)) {
+        const changedPerson = { ...duplicated, number: newNumber }
+        console.log(changedPerson)
+        personsService
+          .update(changedPerson)
+          .then(updated => {
+            setPersons(persons.map(person => person.id !== changedPerson.id ? person : updated))
+            setPersonsToShow(persons.map(person => person.id !== changedPerson.id ? person : updated))
+            setNewName('')
+            setNewNumber('')
+            alert('NNumber changed correctly')
+          })
+      }
+    }
+
     else {
-      const newPerson = { name: newName, id: persons[persons.length-1].id + 1, number: newNumber }
+      const newPerson = { name: newName, id: persons[persons.length - 1].id + 1, number: newNumber }
       personsService.create(newPerson).then(newPerson => {
         setPersons(persons.concat(newPerson))
         setPersonsToShow(persons.concat(newPerson))
@@ -54,11 +68,11 @@ const App = () => {
   }
 
   const deletePerson = (name, id) => {
-    if(window.confirm(`Delete ${name}?`)) {
+    if (window.confirm(`Delete ${name}?`)) {
       personsService.deletePerson(id).then(confirmation => {
         console.log(confirmation)
-        setPersons(persons)
-        setPersonsToShow(persons)
+        setPersons(persons.map(person => person.id !== id))
+        setPersonsToShow(persons.map(person => person.id !== id))
         setNewName('')
         setNewNumber('')
         alert('Person and number deleted correctly')
