@@ -57,6 +57,12 @@ const App = () => {
               setSuccess(null)
             }, 5000)
           })
+          .catch(error => {
+            setSuccess(`Error: ${error}`)
+            setTimeout(() => {
+              setSuccess(null)
+            }, 5000)
+          })
       }
     }
     else {
@@ -67,6 +73,12 @@ const App = () => {
         setNewName('')
         setNewNumber('')
         setSuccess(`${newPerson.name} number's added`)
+        setTimeout(() => {
+          setSuccess(null)
+        }, 5000)
+      })
+      .catch(error => {
+        setSuccess(`Error: ${error}`)
         setTimeout(() => {
           setSuccess(null)
         }, 5000)
