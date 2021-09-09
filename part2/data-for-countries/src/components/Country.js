@@ -14,7 +14,8 @@ const Country = ({ country }) => {
       .get(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${country.capital}`)
       .then(response => {
         setWeather(response.data)
-        
+        // Displays undefined, setState functions are async
+        console.log(weather)
       })
   }, [])
 
