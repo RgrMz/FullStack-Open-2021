@@ -16,9 +16,9 @@ const App = () => {
       setPersons(initialPersons)
       setPersonsToShow(initialPersons)
     })
-  
+
   }, [])
-  
+
   const handleNameChange = (event) =>
     setNewName(event.target.value)
 
@@ -26,13 +26,13 @@ const App = () => {
     setNewNumber(event.target.value)
 
   const handleFilterChange = (event) => {
-    if(filter.length === 0)
+    if (filter.length === 0)
       setPersonsToShow(persons)
     setFilter(event.target.value)
     const personsFiltered = persons.filter(person => {
       return new RegExp(`^${filter.toLowerCase()}`).test(person.name.toLowerCase())
     })
-    if(personsFiltered.length !== 0)
+    if (personsFiltered.length !== 0)
       setPersonsToShow(personsFiltered)
   }
 
@@ -42,7 +42,7 @@ const App = () => {
     if (typeof duplicated !== 'undefined')
       alert(`${newName} is already added to the phonebook`)
     else {
-      const newPerson = { name: newName, id: persons.length + 1, number: newNumber }
+      const newPerson = { name: newName, id: persons[persons.length-1].id + 1, number: newNumber }
       personsService.create(newPerson).then(newPerson => {
         setPersons(persons.concat(newPerson))
         setPersonsToShow(persons.concat(newPerson))
@@ -53,16 +53,31 @@ const App = () => {
     }
   }
 
+  const deletePerson = (name, id) => {
+    if(window.confirm(`Delete ${name}?`)) {
+      personsService.deletePerson(id).then(confirmation => {
+        console.log(confirmation)
+        setPersons(persons)
+        setPersonsToShow(persons)
+        setNewName('')
+        setNewNumber('')
+        alert('Person and number deleted correctly')
+      })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
-        <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
-      <PersonForm newName={newName} newNumber={newNumber} 
-        handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} 
-        addPerson={addPerson}/>
+      <PersonForm newName={newName} newNumber={newNumber}
+        handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
+        addPerson={addPerson} />
       <h2>Numbers</h2>
-      <Numbers personsToShow={personsToShow} />
+      <div>
+        <Numbers personsToShow={personsToShow} deletePerson={deletePerson} />
+      </div>
     </div>
   )
 }
